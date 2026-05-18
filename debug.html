@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head><title>FschoolAI Debug</title></head>
+<body style="background:#08080F;color:#eee;font-family:monospace;padding:20px;">
+<h2>FschoolAI Debug</h2>
+<div id="out"></div>
+<script>
+const keys = Object.keys(localStorage);
+const out = document.getElementById('out');
+const important = ['fsa_email','fsa_canvas_token','fsa_canvas_base','fsa_onboarding','fsa_courses','fsa_version','sa_token','sa_base','sa_session'];
+important.forEach(k => {
+  const v = localStorage.getItem(k);
+  out.innerHTML += '<p><b>' + k + ':</b> ' + (v ? (v.length > 100 ? v.substring(0,100)+'...' : v) : 'NOT SET') + '</p>';
+});
+out.innerHTML += '<hr><p>Total localStorage keys: ' + keys.length + '</p>';
+// Test init function
+fetch('/.netlify/functions/init').then(r=>r.json()).then(d=>{
+  out.innerHTML += '<p><b>Init function:</b> ' + (d.token ? 'WORKING - token received' : 'BROKEN - ' + JSON.stringify(d)) + '</p>';
+}).catch(e=>{
+  out.innerHTML += '<p><b>Init function:</b> ERROR - ' + e.message + '</p>';
+});
+</script>
+</body>
+</html>
